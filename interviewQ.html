@@ -1,35 +1,50 @@
 <html>
 	<head>
 		<script type="text/javascript">
-/* 1.0
+/* Changelog
+ *
+ * Author: WingHong_Tang@manulife.com
+ * 1.0
  * Initial version.
  *
+ * 2.0
+ * Fix the results can view one time only.
+ * Fix split function and add support to IE.
+ * Improve error checking on insert numbers functions.
+ *
  */
-		var num = new Array;
-		var arrNums = new Array; // complete integer array, always update this
-		var temp2, pos;
+		var arrNums = new Array; // store numbers entered by user
 
 		function insert() {
 			var str = prompt("Please enter few integers by separate using a comma","12,24,222");
 			
-			//convert a string array to integer array
-			num = str.split(",").map(Number).filter(Boolean);
+			//var num = str.split(',').map(Number).filter(Boolean); // this method only supported in ff, chrome, but not IE
+			var num = new Array();
+			num = str.split(',');
 			
-			if (num != "") {
-				for(i=0; i<num.length; i++) { arrNums.push(num[i]); }
-				
-				alert("Total: " + (arrNums.length) + " number is inserted.");
-				
-				//document.write("This is an integer ", arrNum[0]);
-			} else 
-				alert("Invalid input. Please enter again.");
+			// check for invalid input first, if OK then only insert
+			for(a in num) {
+				if (isNaN(num[a])) {
+					// wrong input
+					alert("Invalid input. Please enter again.");
+					exit;
+				}		
+			}
+			
+			// another for loop insert number
+			for(a in num)
+				arrNums.push(parseInt(num[a], 10));
+
+			alert("Total: " + (arrNums.length) + " number is inserted.");			
 		}
 		
 		// arrange numbers in ascending or descending format
 		// determine selected operation by id
 		function arrange_order(clicked_id) {
+			var temp2, pos;
+				
 			if (arrNums.length == 0) {
-				alert("Please insert numbers 1st.");
+				alert("No number.");
 			} else {
 				// function begin
 				for (i=0; i<arrNums.length; i++) {				
@@ -58,13 +73,7 @@
 					}
 				}
 
-				if (clicked_id == 1)
-					document.write("This ascending order of the integer IS <br /><br />");
-				else
-					document.write("This descending order of the integer IS <br /><br />");
-				
-				for (j=0; j<arrNums.length; j++)
-					document.write(arrNums[j] + "<br />");
+				alert(arrNums);
 			}
 		}
       </script>
@@ -73,5 +82,8 @@
    <input type="button" onclick="insert()" value="Insert numbers" /><br />
    <input type="button" id = "1" onclick="arrange_order(this.id)" value="Ascending order" /><br />
    <input type="button" id = "2" onclick="arrange_order(this.id)" value="Descending order" /><br />
+   
+   <br />
+   By refreshing this page, the numbers will be reset too.
 </body>
 </html>
