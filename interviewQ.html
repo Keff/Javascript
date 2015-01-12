@@ -1,0 +1,77 @@
+<html>
+	<head>
+		<script type="text/javascript">
+/* 1.0
+ * Initial version.
+ *
+ */
+		var num = new Array;
+		var arrNums = new Array; // complete integer array, always update this
+		var temp2, pos;
+
+		function insert() {
+			var str = prompt("Please enter few integers by separate using a comma","12,24,222");
+			
+			//convert a string array to integer array
+			num = str.split(",").map(Number).filter(Boolean);
+			
+			if (num != "") {
+				for(i=0; i<num.length; i++) { arrNums.push(num[i]); }
+				
+				alert("Total: " + (arrNums.length) + " number is inserted.");
+				
+				//document.write("This is an integer ", arrNum[0]);
+			} else 
+				alert("Invalid input. Please enter again.");
+		}
+		
+		// arrange numbers in ascending or descending format
+		// determine selected operation by id
+		function arrange_order(clicked_id) {
+			if (arrNums.length == 0) {
+				alert("Please insert numbers 1st.");
+			} else {
+				// function begin
+				for (i=0; i<arrNums.length; i++) {				
+					// use pos here to identify array position
+					pos = i;
+					temp2 = arrNums[i];
+					
+					for (k=1; k<=i; k++) {
+						// ascending
+						if (clicked_id == 1) {
+							if (temp2 < arrNums[i-k]) {							
+								arrNums[pos] = arrNums[i-k];
+								arrNums[pos-1] = temp2;
+
+								pos--;
+							}	
+						// descending
+						} else {
+							if (temp2 > arrNums[i-k]) {							
+								arrNums[pos] = arrNums[i-k];
+								arrNums[pos-1] = temp2;
+							
+								pos--;
+							}
+						}							
+					}
+				}
+
+				if (clicked_id == 1)
+					document.write("This ascending order of the integer IS <br /><br />");
+				else
+					document.write("This descending order of the integer IS <br /><br />");
+				
+				for (j=0; j<arrNums.length; j++)
+					document.write(arrNums[j] + "<br />");
+			}
+		}
+      </script>
+</head>
+<body>
+   <input type="button" onclick="insert()" value="Insert numbers" /><br />
+   <input type="button" id = "1" onclick="arrange_order(this.id)" value="Ascending order" /><br />
+   <input type="button" id = "2" onclick="arrange_order(this.id)" value="Descending order" /><br />
+</body>
+</html>
